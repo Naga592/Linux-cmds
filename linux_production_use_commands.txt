@@ -467,11 +467,73 @@ tmpfs                 tmpfs       370264      100    370164   1% /run/user/1000
 ======================================================================================
 
 editing file in linux with sed command 
+==================================
 
 
+=============================================================================
+fs increse rhel 7 xfs fs 
+
+[root@vlherhspr11 ~]# cat /etc/*release
+NAME="Red Hat Enterprise Linux Server"
+VERSION="7.7 (Maipo)"
+ID="rhel"
+ID_LIKE="fedora"
+VARIANT="Server"
+VARIANT_ID="server"
+VERSION_ID="7.7"
+PRETTY_NAME=RHEL
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:redhat:enterprise_linux:7.7:GA:server"
+HOME_URL="https://www.redhat.com/"
+BUG_REPORT_URL="https://bugzilla.redhat.com/"
+ 
+REDHAT_BUGZILLA_PRODUCT="Red Hat Enterprise Linux 7"
+REDHAT_BUGZILLA_PRODUCT_VERSION=7.7
+REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux"
+REDHAT_SUPPORT_PRODUCT_VERSION="7.7"
+Red Hat Enterprise Linux Server release 7.7 (Maipo)
+Red Hat Enterprise Linux Server release 7.7 (Maipo)
+[root@vlherhspr11 ~]#
+[root@vlherhspr11 ~]# ls -ld /var/lib/mongodb
+drwxr-xr-x. 11 mongodb mongodb 4096 Oct 30 01:34 /var/lib/mongodb
+[root@vlherhspr11 ~]#
+[root@vlherhspr11 ~]#
+[root@vlherhspr11 ~]# vgs
+  VG        #PV #LV #SN Attr   VSize    VFree
+  appvg       2   5   0 wz--n- <799.88g <100.38g
+  baseappvg   1   1   0 wz--n-  <10.00g    4.00m
+  rootvg      1   7   0 wz--n-   68.99g   37.99g
+  swpdmpvg    1   2   0 wz--n-  <50.00g    4.00m
+[root@vlherhspr11 ~]#
+[root@vlherhspr11 ~]#
+[root@vlherhspr11 ~]# lvextend -L + 10G /dev/mapper/appvg-mangodblv
+  Size requires number argument.
+  Invalid argument for --size: +
+  Error during parsing of command line.
+[root@vlherhspr11 ~]# lvextend -L +
+[root@vlherhspr11 ~]#
+[root@vlherhspr11 ~]#
+[root@vlherhspr11 ~]# lvextend -L +10G /dev/mapper/appvg-mangodblv
+  Size of logical volume appvg/mangodblv changed from 54.00 GiB (864 extents) to 64.00 GiB (1024 extents).
+  Logical volume appvg/mangodblv successfully resized.
+[root@vlherhspr11 ~]# xfs_growfs /dev/mapper/appvg-mangodblv
+meta-data=/dev/mapper/appvg-mangodblv isize=512    agcount=6, agsize=1638400 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=0 spinodes=0
+data     =                       bsize=4096   blocks=9175040, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal               bsize=4096   blocks=3200, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+data blocks changed from 9175040 to 16777216
+[root@vlherhspr11 ~]# df -HP /var/lib/mongodb
+Filesystem                   Size  Used Avail Use% Mounted on
+/dev/mapper/appvg-mangodblv   69G   34G   36G  49% /var/lib/mongodb
+[root@vlherhspr11 ~]#
 
 
-
+=============================================================================
 
 
 
