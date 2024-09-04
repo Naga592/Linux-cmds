@@ -534,10 +534,182 @@ Filesystem                   Size  Used Avail Use% Mounted on
 
 
 =============================================================================
+This will show you the memory usage of the top processes in MB.
+
+[root@ip-172-31-1-245 ~]# cat /etc/*release
+NAME="Red Hat Enterprise Linux"
+VERSION="9.4 (Plow)"
+ID="rhel"
+ID_LIKE="fedora"
+VERSION_ID="9.4"
+PLATFORM_ID="platform:el9"
+PRETTY_NAME="Red Hat Enterprise Linux 9.4 (Plow)"
+ANSI_COLOR="0;31"
+LOGO="fedora-logo-icon"
+CPE_NAME="cpe:/o:redhat:enterprise_linux:9::baseos"
+HOME_URL="https://www.redhat.com/"
+DOCUMENTATION_URL="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9"
+BUG_REPORT_URL="https://bugzilla.redhat.com/"
+
+REDHAT_BUGZILLA_PRODUCT="Red Hat Enterprise Linux 9"
+REDHAT_BUGZILLA_PRODUCT_VERSION=9.4
+REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux"
+REDHAT_SUPPORT_PRODUCT_VERSION="9.4"
+Red Hat Enterprise Linux release 9.4 (Plow)
+Red Hat Enterprise Linux release 9.4 (Plow)
+[root@ip-172-31-1-245 ~]#
+[root@ip-172-31-1-245 ~]# ps aux --sort=-%mem | awk 'NR==1{print $0; next} {printf "%-10s %-8s %8.2f MB  %-s\n", $1, $2, $6/1024, $11}' | head -n 11
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root       682         27.85 MB  /usr/bin/python3
+polkitd    935         22.14 MB  /usr/lib/polkit-1/polkitd
+root       670         21.25 MB  /usr/sbin/NetworkManager
+root       1           17.18 MB  /usr/lib/systemd/systemd
+ec2-user   3941        13.34 MB  /usr/lib/systemd/systemd
+root       532         11.76 MB  /usr/lib/systemd/systemd-udevd
+root       3937        11.50 MB  sshd:
+root       635         11.05 MB  /usr/lib/systemd/systemd-logind
+root       1272         9.12 MB  sshd:
+root       516          9.00 MB  /usr/lib/systemd/systemd-journald
+[root@ip-172-31-1-245 ~]#
+
+[root@ip-172-31-1-245 ~]#
+[root@ip-172-31-1-245 ~]# free -m
+               total        used        free      shared  buff/cache   available
+Mem:             765         244         231           5         406         520
+Swap:              0           0           0
+[root@ip-172-31-1-245 ~]#
+
+==========================================================================================
+
+#!/bin/bash
+
+# Monitoring System Performance
+echo "=== System Performance ==="
+top -b -n 1 | head -20
+echo
+
+echo "=== CPU Usage ==="
+mpstat
+echo
+
+echo "=== Memory Usage ==="
+free -m
+echo
+
+echo "=== Disk Usage ==="
+df -h
+echo
+
+echo "=== Disk I/O ==="
+iostat
+echo
+
+echo "=== Network Interfaces ==="
+ip a
+echo
+
+echo "=== Listening Ports ==="
+ss -tuln
+echo
+
+echo "=== Open Files and Processes ==="
+lsof | head -20
+echo
+
+# Housekeeping Operations
+# Replace /path/to/clean and /source /destination with actual paths
+CLEAN_PATH="/path/to/clean"
+SOURCE_PATH="/source"
+DEST_PATH="/destination"
+BACKUP_ARCHIVE="/path/to/archive.tar.gz"
+
+echo "=== File Search ==="
+find $CLEAN_PATH -type f -name "*.log" -print
+echo
+
+echo "=== Disk Cleanup ==="
+rm -rf $CLEAN_PATH
+echo
+
+echo "=== Directory Creation ==="
+mkdir -p $CLEAN_PATH
+echo
+
+echo "=== File Copy ==="
+cp -r $SOURCE_PATH $DEST_PATH
+echo
+
+echo "=== File System Check ==="
+fsck -n /dev/sdX
+echo
+
+echo "=== Filesystem Info ==="
+tune2fs -l /dev/sdX
+echo
+
+echo "=== Disk Usage Analyzer ==="
+ncdu
+echo
+
+echo "=== Trim Unused Blocks ==="
+fstrim -v /mount/point
+echo
+
+echo "=== Backup Archive ==="
+tar -czvf $BACKUP_ARCHIVE $SOURCE_PATH
+echo
+
+echo "=== Sync Directories ==="
+rsync -avz $SOURCE_PATH $DEST_PATH
+echo
 
 
+Monitoring Commands:
+System Load and Performance:
 
+top: Displays real-time system summary and process usage.
+htop: Enhanced version of top, with a better interface.
+vmstat: Provides information about processes, memory, paging, block I/O, traps, and CPU activity.
+iostat: Monitors system input/output device loading.
+sar: Collects, reports, and saves system activity information.
+mpstat: Provides CPU usage statistics.
+free -m: Displays memory usage (-m for MB).
+Disk Usage:
 
+df -h: Reports file system disk space usage (-h for human-readable format).
+du -sh /path/to/directory: Shows disk usage of a directory.
+Network Monitoring:
+
+ip a: Displays all network interfaces and their statuses.
+ss -tuln: Lists all listening ports.
+netstat -an: Shows network connections, routing tables, interface statistics, masquerade connections, and multicast memberships.
+ping: Checks connectivity to a network host.
+traceroute: Traces the route packets take to a network host.
+Process Monitoring:
+
+ps aux: Lists all running processes.
+pstree: Displays a tree of processes.
+lsof: Lists open files and the processes that opened them.
+File System Housekeeping Commands:
+File and Directory Management:
+
+find /path -type f -name "filename": Finds files by name.
+rm -rf /path/to/directory: Deletes a directory and its contents.
+mkdir -p /path/to/directory: Creates a directory and parent directories if necessary.
+cp -r /source /destination: Copies files or directories.
+File System Checks:
+
+fsck /dev/sdX: Checks and repairs a Linux file system.
+tune2fs -l /dev/sdX: Displays the filesystem superblock information.
+Disk Usage Cleanup:
+
+ncdu: A disk usage analyzer with an interactive interface.
+fstrim -v /mount/point: Discards unused blocks on a mounted filesystem (useful for SSDs).
+Backup and Restore:
+
+rsync -avz /source /destination: Syncs files and directories between two locations.
+tar -czvf archive.tar.gz /path/to/directory: Archives and compresses a directory.
+These commands will help you keep an eye on your RHEL system's health and maintain your file system efficiently.
 
 
 
