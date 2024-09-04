@@ -712,6 +712,43 @@ tar -czvf archive.tar.gz /path/to/directory: Archives and compresses a directory
 These commands will help you keep an eye on your RHEL system's health and maintain your file system efficiently.
 
 
+=========================================================================================
+
+
+Set Non-Expiry Password for Existing User:
+
+ chage -M 99999 -m 0 -W 7 naga
+
+-M 99999: Sets the maximum number of days between password changes (effectively non-expiring).
+-m 0: Sets the minimum number of days between password changes (can be set to 0 if you want to allow immediate changes).
+-W 7: Sets the number of days to warn before the password expires (set as needed).
+
+[root@ip-172-31-1-245 ~]# id naga
+uid=1001(naga) gid=1001(naga) groups=1001(naga)
+[root@ip-172-31-1-245 ~]#
+[root@ip-172-31-1-245 ~]#
+[root@ip-172-31-1-245 ~]# sudo chage -M 99999 -m 0 -W 7 naga
+[root@ip-172-31-1-245 ~]#
+[root@ip-172-31-1-245 ~]# sudo chage --list naga
+Last password change                                    : Sep 04, 2024
+Password expires                                        : never
+Password inactive                                       : never
+Account expires                                         : never
+Minimum number of days between password change          : 0
+Maximum number of days between password change          : 99999
+Number of days of warning before password expires       : 7
+[root@ip-172-31-1-245 ~]#
+[root@ip-172-31-1-245 ~]#
+[root@ip-172-31-1-245 ~]#
+
+Set Non-Expiry for New Users:
+
+When creating a new user, ensure the defaults reflect the desired po
+
+sudo useradd username
+sudo chage -M 99999 -m 0 -W 7 username
+
+
 
 
 
