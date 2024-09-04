@@ -1,0 +1,482 @@
+to check the file size for the file 
+
+[root@servera tmp]# du -h test.log
+1.6G    test.log
+[root@servera tmp]#
+
+to check the directory size for the file 
+
+[root@servera tmp]# du -hs /tmp/newdir/
+1.4G    /tmp/newdir/
+[root@servera tmp]#
+
+
+find and display the largest files or directories within a specified directory in linux rhel tested 
+
+find . -printf '%s %p\n'| sort -nr | head -10
+
+check swap space in rhel 
+
+[root@servera tmp]# free -h
+               total        used        free      shared  buff/cache   available
+Mem:           3.5Gi       1.5Gi       1.3Gi        20Mi       1.0Gi       2.0Gi
+Swap:          2.0Gi          0B       2.0Gi
+[root@servera tmp]#
+
+[root@servera tmp]# free -m
+               total        used        free      shared  buff/cache   available
+Mem:            3615        1538        1364          20        1013        2077
+Swap:           2047           0        2047
+[root@servera tmp]#
+
+
+The free command in Linux is used to display the amount of free and used memory in the system.
+
+free -g
+free -k
+free -m
+
+
+
+dnf install sysstat 
+
+#sar -u 2 5
+
+
+to create empty 10 gb file|  Linux & and some filesystems (ext4, xfs, btrfs and ocfs2)
+
+[root@servera ~]# fallocate -l 10G 10Gigfile
+[root@servera ~]# pwd
+/root
+[root@servera ~]# ls -l
+total 10485768
+-rw-r--r--. 1 root root 10737418240 Sep  3 22:25 10Gigfile
+-rw-------. 1 root root        1011 Apr 27 18:27 anaconda-ks.cfg
+drwxr-xr-x. 2 root root           6 Apr 27 18:42 Desktop
+drwxr-xr-x. 2 root root           6 Apr 27 18:42 Documents
+drwxr-xr-x. 2 root root           6 Apr 27 18:42 Downloads
+drwxr-xr-x. 2 root root           6 Apr 27 18:42 Music
+drwxr-xr-x. 2 root root           6 Apr 27 18:42 Pictures
+drwxr-xr-x. 2 root root           6 Apr 27 18:42 Public
+drwxr-xr-x. 2 root root           6 Apr 27 18:42 Templates
+drwxr-xr-x. 2 root root           6 Apr 27 18:42 Videos
+
+[root@servera ~]# du -h 10Gigfile
+11G     10Gigfile
+[root@servera ~]#
+
+[root@servera ~]# mv 10Gigfile 10Gigfile.log
+
+[root@servera ~]# df -HP /
+Filesystem             Size  Used Avail Use% Mounted on
+/dev/mapper/rhel-root   18G   15G  3.1G  83% /
+[root@servera ~]#
+
+
+[root@servera ~]# gzip -c 10Gigfile.log > 10Gigfile.log.gz && > 10Gigfile.log
+[root@servera ~]# ls -l
+total 8112
+-rw-r--r--. 1 root root       0 Sep  3 22:34 10Gigfile.log
+-rw-r--r--. 1 root root 8299180 Sep  3 22:34 10Gigfile.log.gz
+-rw-------. 1 root root    1011 Apr 27 18:27 anaconda-ks.cfg
+drwxr-xr-x. 2 root root       6 Apr 27 18:42 Desktop
+drwxr-xr-x. 2 root root       6 Apr 27 18:42 Documents
+drwxr-xr-x. 2 root root       6 Apr 27 18:42 Downloads
+drwxr-xr-x. 2 root root       6 Apr 27 18:42 Music
+drwxr-xr-x. 2 root root       6 Apr 27 18:42 Pictures
+drwxr-xr-x. 2 root root       6 Apr 27 18:42 Public
+drwxr-xr-x. 2 root root       6 Apr 27 18:42 Templates
+drwxr-xr-x. 2 root root       6 Apr 27 18:42 Videos
+[root@servera ~]#
+[root@servera ~]# df -HP
+Filesystem             Size  Used Avail Use% Mounted on
+devtmpfs               4.2M     0  4.2M   0% /dev
+tmpfs                  1.9G     0  1.9G   0% /dev/shm
+tmpfs                  759M   11M  749M   2% /run
+/dev/mapper/rhel-root   18G  6.0G   12G  34% /
+/dev/nvme0n1p2         1.1G  306M  702M  31% /boot
+/dev/nvme0n1p1         628M  7.4M  621M   2% /boot/efi
+tmpfs                  380M  103k  380M   1% /run/user/1000
+/dev/sr0                11G   11G     0 100% /run/media/naga/RHEL-9-3-0-BaseOS-x86_64
+[root@servera ~]#
+[root@servera ~]# df -HP /
+Filesystem             Size  Used Avail Use% Mounted on
+/dev/mapper/rhel-root   18G  6.0G   12G  34% /
+[root@servera ~]#
+
+
+
+Linux & all filesystems
+
+xfs_mkfile 10240m 10Gigfile
+
+gzip -c 10Gigfile.log > 10Gigfile.log.gz && > 10Gigfile.log  
+
+zip the file to save the space 
+
+gzip -c test.log > test.log.gz && > test.log   
+
+
+
+
+==============================================
+
+Purpose: Find the top 5 largest files or directories in the current directory and all subdirectories.
+
+du -a | sort -n -r | head -n 5
+
+
+Purpose: List the top 5 largest directories or files in the current directory, without recursion into subdirectories.
+
+du -hs * | sort -rh | head -5
+
+
+Purpose: Identify the top 5 largest directories or files in the current directory, without including sizes of subdirectories.
+
+du -Sh | sort -rh | head -5
+
+
+find the file size in current directory 
+
+[root@servera ~]# find -type f -exec du -Sh {} + | sort -rh | head -n 5
+12M     ./.cache/mozilla/firefox/rx8zwgs5.default-default/safebrowsing/google4/goog-phish-proto.vlpset
+8.6M    ./.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/scriptCache.bin
+8.0M    ./10Gigfile.log.gz
+7.2M    ./.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/startupCache.8.little
+5.0M    ./.mozilla/firefox/rx8zwgs5.default-default/places.sqlite
+[root@servera ~]#
+
+
+
+find size in a specified dir
+
+[root@servera ~]#
+[root@servera ~]# find /root -type f -exec du -Sh {} + | sort -rh | head -n 5
+12M     /root/.cache/mozilla/firefox/rx8zwgs5.default-default/safebrowsing/google4/goog-phish-proto.vlpset
+8.6M    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/scriptCache.bin
+8.0M    /root/10Gigfile.log.gz
+7.2M    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/startupCache.8.little
+5.0M    /root/.mozilla/firefox/rx8zwgs5.default-default/places.sqlite
+[root@servera ~]# ]
+
+
+find the file size in bytes 
+
+[root@servera ~]# find /root -type f -printf "%s %p\n" | sort -rn | head -n 5
+12259006 /root/.cache/mozilla/firefox/rx8zwgs5.default-default/safebrowsing/google4/goog-phish-proto.vlpset
+8913860 /root/.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/scriptCache.bin
+8299180 /root/10Gigfile.log.gz
+7499991 /root/.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/startupCache.8.little
+5242880 /root/.mozilla/firefox/rx8zwgs5.default-default/places.sqlite
+
+
+[root@servera ~]# du -a /root | sort -n -r | head -n 5
+76900   /root
+50852   /root/.cache
+45940   /root/.cache/mozilla/firefox/rx8zwgs5.default-default
+45940   /root/.cache/mozilla/firefox
+45940   /root/.cache/mozilla
+[root@servera ~]#
+
+
+displays disk usage of all files and directories under /home
+
+[root@servera ~]# du -a /root | sort -n -r | head -n 5
+76900   /root
+50852   /root/.cache
+45940   /root/.cache/mozilla/firefox/rx8zwgs5.default-default
+45940   /root/.cache/mozilla/firefox
+45940   /root/.cache/mozilla
+[root@servera ~]#
+
+
+
+List files that haven't been modified in the last 15 days:
+
+
+find /tmp/testfiles* -mtime +15 -print
+
+
+Delete the files if you're sure you want to proceed:
+
+
+find /tmp/testfiles* -mtime +15 -exec rm {} \;
+
+
+The command you’ve provided will find all files in the current directory and its subdirectories that haven’t been modified in the last 90 days, and then it will save the list of those files to /tmp/mim-90days-older.log. Here’s the command:
+
+
+find . -mtime +90 -print > /tmp/mim-90days-older.log
+
+
+==================================================================================================================
+
+You can combine finding and deleting files older than 90 days into a single command like this:   Tested working 
+
+[root@servera testfiles]# find . -mtime +90 -print > /tmp/mim-90days-older.log
+[root@servera testfiles]#
+[root@servera testfiles]# cat /tmp/mim-90days-older.log
+./oldfile.txt
+[root@servera testfiles]#
+[root@servera testfiles]# ls -l oldfile.txt
+-rw-r--r--. 1 root root 0 Jun  4 23:18 oldfile.txt
+[root@servera testfiles]#
+
+
+to deletd the files older than 90 days 
+
+find . -mtime +90 -exec rm -f {} \;
+
+==================================================================================================================
+
+
+Find and list files older than 5 days:
+
+find . -mtime +5 -exec ls -ltr {} \;
+
+
+Find and delete files older than 5 days:
+
+find . -mtime +5 -exec rm -f {} \;
+
+==================================================================================================================
+
+
+Create a tar archive:
+
+tar -cvf tarfile.tar tarfile
+
+
+Extract a tar archive:
+
+tar -xvf tarfile.tar
+
+==================================================================================================================
+
+
+
+
+[root@servera testfiles]# find /root -xdev -type f -exec du -h {} + | sort -rh | head -20
+12M     /root/.cache/mozilla/firefox/rx8zwgs5.default-default/safebrowsing/google4/goog-phish-proto.vlpset
+8.6M    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/scriptCache.bin
+8.0M    /root/10Gigfile.log.gz
+7.2M    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/startupCache.8.little
+5.0M    /root/.mozilla/firefox/rx8zwgs5.default-default/places.sqlite
+5.0M    /root/.mozilla/firefox/rx8zwgs5.default-default/favicons.sqlite
+2.8M    /root/.cache/gnome-software/appstream/components.xmlb
+2.0M    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/startupCache/scriptCache-child.bin
+1.9M    /root/.mozilla/firefox/rx8zwgs5.default-default/storage/permanent/chrome/idb/3870112724rsegmnoittet-es.sqlite
+1.6M    /root/.mozilla/firefox/rx8zwgs5.default-default/gmp-gmpopenh264/2.3.2/libgmpopenh264.so
+1.6M    /root/.cache/gnome-software/odrs/ratings.json
+1.5M    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/safebrowsing/google-trackwhite-digest256.vlpset
+820K    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/cache2/entries/A100D13B31B3B47B8A440E86B5443E2156994819
+812K    /root/.mozilla/firefox/rx8zwgs5.default-default/storage/permanent/chrome/idb/3870112724rsegmnoittet-es.files/1
+572K    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/safebrowsing/google4/goog-badbinurl-proto.vlpset
+572K    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/cache2/entries/ACD6E2DF09C3D0EA2321FD3EC883354E34B99DFF
+540K    /root/.cache/gstreamer-1.0/registry.x86_64.bin
+368K    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/cache2/entries/A336B0A596E49F551D23F09A4A3358B828CF09B1
+348K    /root/.cache/mozilla/firefox/rx8zwgs5.default-default/safebrowsing/mozstd-trackwhite-digest256.vlpset
+332K    /root/.mozilla/firefox/rx8zwgs5.default-default/extensions.json
+[root@servera testfiles]#
+
+List files in /tmp with sizes in human-readable format (e.g., KB, MB, GB):
+
+[root@servera testfiles]# find /tmp -xdev -type f -exec du -h {} + | sort -rh | head -20
+1.4G    /tmp/newdir/test.log
+8.0M    /tmp/10Gigfile.log.gz
+4.0K    /tmp/.X1-lock
+4.0K    /tmp/.X1025-lock
+4.0K    /tmp/.X1024-lock
+4.0K    /tmp/.X0-lock
+4.0K    /tmp/mim-90days-older.log
+0       /tmp/test.log
+0       /tmp/testfiles/oldfile.txt
+0       /tmp/testfiles/file9.txt
+0       /tmp/testfiles/file8.txt
+0       /tmp/testfiles/file7.txt
+0       /tmp/testfiles/file6.txt
+0       /tmp/testfiles/file5.txt
+0       /tmp/testfiles/file50.txt
+0       /tmp/testfiles/file4.txt
+0       /tmp/testfiles/file49.txt
+0       /tmp/testfiles/file48.txt
+0       /tmp/testfiles/file47.txt
+0       /tmp/testfiles/file46.txt
+[root@servera testfiles]#
+
+
+=====================================================================================================
+
+
+[root@servera tmp]# du -hs *
+8.0M    10Gigfile.log.gz
+4.0K    mim-90days-older.log
+1.4G    newdir
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-chronyd.service-yPdCHL
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-colord.service-mjMfqC
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-dbus-broker.service-gLyZZz
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-fwupd.service-B8AaTm
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-kdump.service-mkB7gf
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-ModemManager.service-CDh8VK
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-power-profiles-daemon.service-SyEBfp
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-rtkit-daemon.service-XcwSm4
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-switcheroo-control.service-ZXOgjB
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-systemd-logind.service-IVSyzo
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-upower.service-5YTL0H
+4.0K    testfiles
+0       test.log
+0       vmware-root_1007-4282171056
+0       vmware-root_1139-3988228457
+0       vmware-root_976-2966103375
+0       vmware-root_978-2957649101
+0       vmware-root_981-4290756372
+0       vmware-root_983-4282302102
+0       vmware-root_986-2991071939
+0       vmware-root_987-4257200413
+0       vmware-root_988-2991203012
+[root@servera tmp]#
+
+
+
+The command you provided will list the top 30 largest files and directories in the current directory. Here’s a breakdown
+
+[root@servera tmp]# pwd
+/tmp
+[root@servera tmp]# du -hs * | sort -rh | head -30
+1.4G    newdir
+8.0M    10Gigfile.log.gz
+4.0K    testfiles
+4.0K    mim-90days-older.log
+0       vmware-root_988-2991203012
+0       vmware-root_987-4257200413
+0       vmware-root_986-2991071939
+0       vmware-root_983-4282302102
+0       vmware-root_981-4290756372
+0       vmware-root_978-2957649101
+0       vmware-root_976-2966103375
+0       vmware-root_1139-3988228457
+0       vmware-root_1007-4282171056
+0       test.log
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-upower.service-5YTL0H
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-systemd-logind.service-IVSyzo
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-switcheroo-control.service-ZXOgjB
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-rtkit-daemon.service-XcwSm4
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-power-profiles-daemon.service-SyEBfp
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-ModemManager.service-CDh8VK
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-kdump.service-mkB7gf
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-fwupd.service-B8AaTm
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-dbus-broker.service-gLyZZz
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-colord.service-mjMfqC
+0       systemd-private-b7c9c476b5bc4ca18c69b8f661194080-chronyd.service-yPdCHL
+[root@servera tmp]#
+
+
+This will show the sizes in a human-readable format with units like MB or GB.will show the top 10 largest files and directories within /usr
+
+[root@servera tmp]# du -ah /usr | sort -rh | head -n 10
+3.8G    /usr
+1.5G    /usr/share
+1.1G    /usr/lib64
+750M    /usr/lib
+382M    /usr/share/locale
+377M    /usr/lib/firmware
+353M    /usr/share/fonts
+292M    /usr/share/fonts/google-noto-cjk
+287M    /usr/lib64/firefox
+221M    /usr/lib/locale
+[root@servera tmp]#
+
+
+
+==================================
+tcpdump linux
+/usr/sbin/tcpdump -i eth0 -e -f -l -n -S -vv -w /tmp/`hostname`_tcpdump_`date "+%Y%m%d-%H_%M_%S"`.pcap -x host 10.5.35.8 and port 22380   LINIX
+ 
+lclrssm9.ngco.com:/ # source 10.74.160.1
+lclrssm9.ngco.com:/ # source 10.74.160.3
+lclrssm9.ngco.com:/ # dest
+lclrssm9.ngco.com:/ # 10.74.8.13
+lclrssm9.ngco.com:/ # dest 10.74.8.13 3202
+ 
+ 
+
+==========================================================================
+check inodes  which folder is consuming more inodes 
+
+
+find /var -xdev -printf '%h\n' | sort | uniq -c | sort -k 1 -n
+
+
+
+==========================================================================================
+see inodes 
+
+[root@servera tmp]# df -i
+Filesystem             Inodes  IUsed   IFree IUse% Mounted on
+devtmpfs               454810    469  454341    1% /dev
+tmpfs                  462830      1  462829    1% /dev/shm
+tmpfs                  819200    952  818248    1% /run
+/dev/mapper/rhel-root 8603648 130748 8472900    2% /
+/dev/nvme0n1p2         524288     23  524265    1% /boot
+/dev/nvme0n1p1              0      0       0     - /boot/efi
+tmpfs                   92566    115   92451    1% /run/user/1000
+/dev/sr0                    0      0       0     - /run/media/naga/RHEL-9-3-0-BaseOS-x86_64
+
+
+[root@servera tmp]# df -h
+Filesystem             Size  Used Avail Use% Mounted on
+devtmpfs               4.0M     0  4.0M   0% /dev
+tmpfs                  1.8G     0  1.8G   0% /dev/shm
+tmpfs                  724M  9.7M  714M   2% /run
+/dev/mapper/rhel-root   17G  5.6G   11G  34% /
+/dev/nvme0n1p2         960M  292M  669M  31% /boot
+/dev/nvme0n1p1         599M  7.0M  592M   2% /boot/efi
+tmpfs                  362M  100K  362M   1% /run/user/1000
+/dev/sr0               9.9G  9.9G     0 100% /run/media/naga/RHEL-9-3-0-BaseOS-x86_64
+
+
+[root@servera tmp]# df -HP
+Filesystem             Size  Used Avail Use% Mounted on
+devtmpfs               4.2M     0  4.2M   0% /dev
+tmpfs                  1.9G     0  1.9G   0% /dev/shm
+tmpfs                  759M   11M  749M   2% /run
+/dev/mapper/rhel-root   18G  6.0G   12G  34% /
+/dev/nvme0n1p2         1.1G  306M  702M  31% /boot
+/dev/nvme0n1p1         628M  7.4M  621M   2% /boot/efi
+tmpfs                  380M  103k  380M   1% /run/user/1000
+/dev/sr0                11G   11G     0 100% /run/media/naga/RHEL-9-3-0-BaseOS-x86_64
+[root@servera tmp]#
+
+FS Type 
+
+[root@servera tmp]# df -T
+Filesystem            Type     1K-blocks     Used Available Use% Mounted on
+devtmpfs              devtmpfs      4096        0      4096   0% /dev
+tmpfs                 tmpfs      1851320        0   1851320   0% /dev/shm
+tmpfs                 tmpfs       740532     9920    730612   2% /run
+/dev/mapper/rhel-root xfs       17141760  5779640  11362120  34% /
+/dev/nvme0n1p2        xfs         983040   298072    684968  31% /boot
+/dev/nvme0n1p1        vfat        613184     7140    606044   2% /boot/efi
+tmpfs                 tmpfs       370264      100    370164   1% /run/user/1000
+/dev/sr0              iso9660   10281784 10281784         0 100% /run/media/naga/RHEL-9-3-0-BaseOS-x86_64
+[root@servera tmp]#
+
+
+
+
+==============================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
