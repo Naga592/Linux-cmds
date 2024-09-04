@@ -750,5 +750,51 @@ sudo chage -M 99999 -m 0 -W 7 username
 
 
 
+------------------
+
+In /etc/login.defs, you can adjust the following parameters to reflect your security policy or control:
+
+PASS_MAX_DAYS: How many days the password is active before it expires.
+PASS_MIN_DAYS: How many days a password must be active before it can be changed by a user.
+PASS_WARN_AGE: The number of days a warning is issued to the user before an impending password expiry.
+The following example modifies your policy such that a password expires after 90 days and cannot be changed until it's been active for seven days, and users are notified five days prior to password expiry:
+
+PASS_MAX_DAYS	90
+PASS_MIN_DAYS	 7
+PASS_WARN_AGE	 5
+
+Changes made to /etc/login.defs affect only new users created on the system. For existing users, you must use the chage command.
+
+You can set the same configuration for existing users with:
+
+$ sudo chage --mindays 7 \
+--maxdays 90 --warndays 5 user1
+
+View password age
+To view the password age for a user, use the --list option (-l for short) with the chage command. For example, to view password information for user1:
+
+$ sudo chage --list user1
+Minimum number of days between password change   : 7
+Maximum number of days between password change	 : 90
+Number of days of warning before password expires: 5
+
+Password expiry
+Skip to the bottom of list
+Image
+IT Automation ebook
+Use the chage command to set the expiry date for an account. This setting defines a given date, after which a user account is locked and inaccessible. You can do this with the --expiredate (-E for short) option.
+
+For example, to cause the user1 account's password to expire after 90 days, count 90 days forward from the current date (July 15, 2022, in this example):
+
+$ sudo chage -E 2022-07-15 user1
+Alternately, use the date command to do a calculation for you:
+
+$ sudo chage --expiredate \
+$(date -d +90days +%Y-%m-%d) user1
+Password policies
+A password policy is one important part of your organization's security posture. With the chage command, you can make your systems manage password reminders and expiry dates reliably. Once the security team defines the appropriate settings, sysadmins can check that the settings are applied consistently.
+
+-------------------------------------------------
+
 
 
